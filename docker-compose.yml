@@ -1,0 +1,8 @@
+services:
+  swagger-ui:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./openapi.json:/usr/share/nginx/html/openapi.json:ro
+    restart: unless-stopped
