@@ -3438,7 +3438,7 @@
     },
     {
       "url": "https://soasoymilkapi-production.up.railway.app",
-      "description": "Override via ?server=https://your-real-domain.up.railway.app"
+      "description": "Production Mirror"
     }
   ],
   "security": []
