@@ -3429,11 +3429,11 @@
   },
   "servers": [
     {
-      "url": "https://xxxxxxx.com",
+      "url": "https://soasoymilkapi-production.up.railway.app/",
       "description": "Production"
     },
     {
-      "url": "https://xxxxxxx.com",
+      "url": "https://soasoymilkapi-production.up.railway.app/",
       "description": "Staging"
     },
     {
