@@ -3429,7 +3429,7 @@
   },
   "servers": [
     {
-      "url": "https://your-api-domain.up.railway.app",
+      "url": "https://soasoymilkapi-production.up.railway.app",
       "description": "Railway API"
     },
     {
@@ -3437,7 +3437,7 @@
       "description": "Local API"
     },
     {
-      "url": "https://your-api-domain.up.railway.app",
+      "url": "https://soasoymilkapi-production.up.railway.app",
       "description": "Override via ?server=https://your-real-domain.up.railway.app"
     }
   ],
