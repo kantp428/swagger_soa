@@ -22,7 +22,7 @@
     };
 
     window.onload = async () => {
-      const response = await fetch("./openapi.json");
+      const response = await fetch("./new.openapi.json");
       const spec = await response.json();
       const overrideServer = resolveServerUrl();
 
