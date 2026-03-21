@@ -3718,6 +3718,11 @@
     },
     "securitySchemes": {}
   },
-  "servers": [],
+  "servers": [
+    {
+      "url": "https://soasoymilkapi-production.up.railway.app",
+      "description": "Production"
+    }
+  ],
   "security": []
 }
