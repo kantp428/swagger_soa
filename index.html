@@ -3,12 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Default Module API Docs</title>
+  <title>API Docs</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.17.14/swagger-ui.min.css" />
   <style>
     body { margin: 0; background: #fafafa; }
     #swagger-ui .topbar { background-color: #1b1b1b; }
     #swagger-ui .topbar .download-url-wrapper { display: none; }
+    .swagger-error {
+      max-width: 720px;
+      margin: 64px auto;
+      padding: 24px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      color: #1b1b1b;
+      font-family: sans-serif;
+    }
+    .swagger-error h1 { margin-top: 0; font-size: 24px; }
+    .swagger-error p { margin-bottom: 0; line-height: 1.5; }
   </style>
 </head>
 <body>
@@ -16,32 +28,58 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.17.14/swagger-ui-bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.17.14/swagger-ui-standalone-preset.min.js"></script>
   <script>
+    const specUrl = "./new.openapi.json";
+
     const resolveServerUrl = () => {
       const params = new URLSearchParams(window.location.search);
       return params.get("server") || window.localStorage.getItem("swaggerServerUrl");
     };
 
+    const renderError = (message) => {
+      document.getElementById("swagger-ui").innerHTML = `
+        <section class="swagger-error">
+          <h1>Unable to load API documentation</h1>
+          <p>${message}</p>
+        </section>
+      `;
+    };
+
     window.onload = async () => {
-      const response = await fetch("./new.openapi.json");
-      const spec = await response.json();
-      const overrideServer = resolveServerUrl();
+      try {
+        const response = await fetch(specUrl, { cache: "no-store" });
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status} while requesting ${specUrl}`);
+        }
 
-      if (overrideServer) {
-        spec.servers = [
-          { url: overrideServer, description: "Selected Server" },
-          ...(spec.servers || []),
-        ];
+        const spec = await response.json();
+        const overrideServer = resolveServerUrl();
+
+        if (overrideServer) {
+          spec.servers = [
+            { url: overrideServer, description: "Selected Server" },
+            ...(spec.servers || []),
+          ];
+        }
+
+        const title = spec.info?.title?.trim() || "API Docs";
+        const version = spec.info?.version?.trim();
+        document.title = version ? `${title} v${version}` : title;
+
+        SwaggerUIBundle({
+          spec,
+          dom_id: "#swagger-ui",
+          presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
+          layout: "StandaloneLayout",
+          deepLinking: true,
+          displayRequestDuration: true,
+          tryItOutEnabled: true,
+          docExpansion: "list",
+          persistAuthorization: true,
+        });
+      } catch (error) {
+        console.error("Failed to initialize Swagger UI", error);
+        renderError(error.message || "Unknown error");
       }
-
-      SwaggerUIBundle({
-        spec,
-        dom_id: "#swagger-ui",
-        presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
-        layout: "StandaloneLayout",
-        deepLinking: true,
-        displayRequestDuration: true,
-        tryItOutEnabled: true,
-      });
     };
   </script>
 </body>
