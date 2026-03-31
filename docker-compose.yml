@@ -4,5 +4,5 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./openapi.json:/usr/share/nginx/html/openapi.json:ro
+      - ./new.openapi.json:/usr/share/nginx/html/new.openapi.json:ro
     restart: unless-stopped
